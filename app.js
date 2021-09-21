@@ -8,6 +8,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 
 const port = process.env.PORT || 3000;
+console.log(process.env.mailchimp_APIKEY);
+console.log(process.env.mailchimp_LISTKEY);
+// console.log(mailchimpapikey);
+// console.log(mailchimplistKey);
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/signup.html");
@@ -33,10 +37,10 @@ app.post("/", (req, res) => {
 
   const jsonData = JSON.stringify(data);
 
-  const url = "https://us5.api.mailchimp.com/3.0/lists/96af3b59ef";
+  const url = `https://us5.api.mailchimp.com/3.0/lists/${process.env.mailchimp_LISTKEY}`;
   const options = {
     method: "POST",
-    auth: "somunelavalli:212bb658e12f4131df1f46821a408bed-us5",
+    auth: `somunelavalli:${process.env.mailchimp_APIKEY}`,
   };
 
   const request = https.request(url, options, (response) => {
@@ -62,6 +66,3 @@ app.post("/failure", (req, res) => {
 app.listen(port, () => {
   console.log("Server is running on port " + port);
 });
-
-// 212bb658e12f4131df1f46821a408bed-us5
-//96af3b59ef
